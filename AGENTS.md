@@ -2,9 +2,9 @@
 
 ## Repo status
 
-This repo is a **bare scaffold** — no source code, no dependencies, no CI.
-Python package layout: `src/wazuh_decoder_gen/` (source), `tests/` (tests), `fixtures/` (sample logs & XML).
-No `pyproject.toml` exists yet — create one before adding any dependencies or tooling config.
+Python package with CLI scaffolding in place. `pyproject.toml` exists with `click` as runtime dep, `ruff` and `pytest` as dev deps under `[project.optional-dependencies]`. CLI entry point at `src/wazuh_decoder_gen/cli.py` exposes `--help` and `--version`. One smoke test passes. No CI pipeline yet.
+
+Layout: `src/wazuh_decoder_gen/` (source), `tests/` (tests), `fixtures/` (sample logs & XML).
 
 ## Toolchain (all enforced by agents)
 
@@ -19,6 +19,9 @@ No pre-commit hooks or CI pipeline exist yet — agents should not assume any au
 ## Commands that matter
 
 ```bash
+# Activate the venv first (created by issue #1)
+source .venv/bin/activate
+
 # Full verification (run after every change)
 ruff check src tests && ruff format --check src tests && pytest -x
 
@@ -53,7 +56,12 @@ python -m pytest tests/path/to/test_file.py -v -s
 ## Working pattern (orchestrator + coder)
 
 This repo uses a dual-agent workflow configured in `.opencode/agents/`:
+
 - `orchestrator` (`.opencode/agents/orchestrator.md`) — plans and delegates; **cannot edit files**
 - `coder` (`.opencode/agents/coder.md`) — implements precise subtasks; **can edit and run commands**
 
 For GitHub issues: fetch via `gh issue view N --json title,body` before starting work.
+
+## Keeping this file accurate
+
+AGENTS.md must reflect current repo reality. When agents make material changes — new dependencies, new module structure, new conventions, new CI, new toolchain — they must update this file as part of the same task. Stale AGENTS.md is worse than no AGENTS.md.
